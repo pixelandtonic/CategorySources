@@ -46,6 +46,7 @@ class CategorySourcesPlugin extends BasePlugin
 				'first' => true,
 				'label' => 'Category Groups',
 				'instructions' => 'Choose which category groups should be included in entry source lists.',
+				'name' => 'categoryGroups',
 				'options' => $groupOptions,
 				'values' => $selectedGroups,
 			)

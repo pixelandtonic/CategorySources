@@ -3,33 +3,73 @@ namespace Craft;
 
 class CategorySourcesPlugin extends BasePlugin
 {
-	function getName()
+	/**
+	 * @return mixed
+	 */
+	public function getName()
 	{
 		return Craft::t('Category Sources');
 	}
 
-	function getVersion()
+	/**
+	 * @return string
+	 */
+	public function getVersion()
 	{
-		return '1.0';
+		return '1.1';
 	}
 
-	function getDeveloper()
+	/**
+	 * @return string
+	 */
+	public function getSchemaVersion()
+	{
+		return '1.0.0';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDeveloper()
 	{
 		return 'Pixel & Tonic';
 	}
 
-	function getDeveloperUrl()
+	/**
+	 * @return string
+	 */
+	public function getDeveloperUrl()
 	{
 		return 'http://pixelandtonic.com';
 	}
 
-	protected function defineSettings()
+	/**
+	 * @return string
+	 */
+	public function getPluginUrl()
 	{
-		return array(
-			'categoryGroups' => array(AttributeType::Mixed, 'default' => array()),
-		);
+		return 'https://github.com/pixelandtonic/CategorySources';
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getDocumentationUrl()
+	{
+		return $this->getPluginUrl().'/blob/master/README.md';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getReleaseFeedUrl()
+	{
+		return 'https://raw.githubusercontent.com/pixelandtonic/CategorySources/master/releases.json';
+	}
+
+	/**
+	 * @return mixed
+	 */
 	public function getSettingsHtml()
 	{
 		$groups = craft()->categories->getAllGroups();
@@ -53,6 +93,11 @@ class CategorySourcesPlugin extends BasePlugin
 		));
 	}
 
+	/**
+	 * @param $settings
+	 *
+	 * @return mixed
+	 */
 	public function prepSettings($settings)
 	{
 		if ($settings['categoryGroups'] == '*')
@@ -63,6 +108,10 @@ class CategorySourcesPlugin extends BasePlugin
 		return $settings;
 	}
 
+	/**
+	 * @param $sources
+	 * @param $context
+	 */
 	public function modifyEntrySources(&$sources, $context)
 	{
 		$selectedGroups = $this->getSettings()->categoryGroups;
@@ -107,9 +156,18 @@ class CategorySourcesPlugin extends BasePlugin
 					'criteria' => array('relatedTo' => array('targetElement' => $category->id))
 				);
 
-
 				$lastSourceByLevel[$l] = &$levelSources['cat:'.$category->id];
 			}
 		}
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function defineSettings()
+	{
+		return array(
+			'categoryGroups' => array(AttributeType::Mixed, 'default' => array()),
+		);
 	}
 }

@@ -3,6 +3,17 @@ namespace Craft;
 
 class CategorySourcesPlugin extends BasePlugin
 {
+	// Properties
+	// =========================================================================
+
+	/**
+	 * @var array Root category IDs by category IDs
+	 */
+	private $_rootCategoryIds = [];
+
+	// Public Methods
+	// =========================================================================
+
 	/**
 	 * @return mixed
 	 */
@@ -160,6 +171,67 @@ class CategorySourcesPlugin extends BasePlugin
 			}
 		}
 	}
+
+	/**
+	 * @param string $elementType
+	 * @param string $sourceKey
+	 *
+	 * @return array|null
+	 */
+	public function getTableAttributesForSource($elementType, $sourceKey)
+	{
+		if ($elementType == 'Entry' && preg_match('/^cat:(\d+)$/', $sourceKey, $matches))
+		{
+			$catId = $matches[1];
+
+			// Do we already have the root ID cached?
+			if (array_key_exists($catId, $this->_rootCategoryIds))
+			{
+				return $this->_rootCategoryIds[$catId];
+			}
+
+			// In case it doesn't exist
+			$this->_rootCategoryIds[$catId] = null;
+
+			$category = craft()->categories->getCategoryById($catId);
+
+			// Is it a nested category?
+			if ($category && $category->level != 1)
+			{
+				// Get the root category in that group
+				$criteria = craft()->elements->getCriteria(ElementType::Category);
+				$criteria->level = 1;
+				$criteria->ancestorOf = $category;
+				$criteria->status = null;
+				$criteria->localeEnabled = null;
+				$rootCategory = $criteria->first();
+
+				if ($rootCategory)
+				{
+					$rootCategoryId = $rootCategory->id;
+
+					// Get all of its descendants
+					$criteria = craft()->elements->getCriteria(ElementType::Category);
+					$criteria->descendantOf = $rootCategory;
+					$criteria->status = null;
+					$criteria->localeEnabled = null;
+					$descendantIds = $criteria->ids();
+
+					foreach ($descendantIds as $id)
+					{
+						$this->_rootCategoryIds[$id] = $rootCategoryId;
+					}
+
+					return craft()->elementIndexes->getTableAttributes($elementType, 'cat:'.$rootCategoryId);
+				}
+			}
+		}
+
+		return null;
+	}
+
+	// Protected Methods
+	// =========================================================================
 
 	/**
 	 * @return array

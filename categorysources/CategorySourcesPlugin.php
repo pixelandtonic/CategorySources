@@ -9,7 +9,7 @@ class CategorySourcesPlugin extends BasePlugin
 	/**
 	 * @var array Root category IDs by category IDs
 	 */
-	private $_rootCategoryIds = [];
+	private $_rootCategoryIds = array();
 
 	// Public Methods
 	// =========================================================================

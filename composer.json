@@ -1,0 +1,45 @@
+{
+  "name": "craftcms/category-sources",
+  "description": "This plugin makes it possible to view your entries by their category-based taxonomies, by adding category-based sources to entries’ source lists.",
+  "version": "2.0.0",
+  "type": "craft-plugin",
+  "keywords": [
+    "cms",
+    "craftcms",
+    "yii2"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Pixel & Tonic",
+      "homepage": "https://pixelandtonic.com/"
+    }
+  ],
+  "support": {
+    "email": "support@craftcms.com",
+    "issues": "https://github.com/craftcms/category-sources/issues?state=open",
+    "source": "https://github.com/craftcms/category-sources",
+    "docs": "https://github.com/craftcms/category-sources",
+    "rss": "https://github.com/craftcms/category-sources/commits/master.atom"
+  },
+  "require": {
+    "craftcms/cms": "~3.0.0-beta.22"
+  },
+  "autoload": {
+    "psr-4": {
+      "craft\\categorysources\\": "src/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ],
+  "extra": {
+    "name": "Category Sources",
+    "handle": "category-sources",
+    "changelogUrl": "https://raw.githubusercontent.com/craftcms/category-sources/master/CHANGELOG.md",
+    "downloadUrl": "https://github.com/craftcms/category-sources/archive/master.zip"
+  }
+}

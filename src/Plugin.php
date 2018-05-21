@@ -71,8 +71,9 @@ class Plugin extends \craft\base\Plugin
                     }
 
                     $levelSources['cat:'.$category->id] = [
+		    	'key' => 'cat:'.$category->id,
                         'label' => $category->title,
-                        'categories' => ['relatedTo' => ['targetElement' => $category->id]]
+                        'criteria' => ['relatedTo' => ['targetElement' => $category->id]]
                     ];
 
                     $lastSourceByLevel[$l] = &$levelSources['cat:'.$category->id];
